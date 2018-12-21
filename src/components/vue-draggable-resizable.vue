@@ -34,7 +34,7 @@ import { matchesSelectorToParentElements } from '../utils/dom'
 
 export default {
   replace: true,
-  name: 'VueDraggableResizable',
+  name: 'VueHotArea',
   props: {
     active: {
       type: Boolean, default: false

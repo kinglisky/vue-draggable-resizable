@@ -1,8 +1,8 @@
 {
-  "name": "vue-draggable-resizable",
-  "version": "1.7.5",
+  "name": "vue-hot-area",
+  "version": "0.0.1",
   "description": "Vue2 Component for resizable and draggable elements",
-  "author": "Maurizio Bonani <maurizio.bonani@gmail.com>",
+  "author": "kinglisky <kinglisky@icloud.com>",
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
@@ -16,18 +16,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mauricius/vue-draggable-resizable.git"
+    "url": "https://github.com/kinglisky/vue-draggable-resizable.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mauricius/vue-draggable-resizable/issues"
+    "url": "https://github.com/kinglisky/vue-draggable-resizable/issues"
   },
-  "homepage": "https://github.com/mauricius/vue-draggable-resizable",
+  "homepage": "https://github.com/kinglisky/vue-draggable-resizable",
   "keywords": [
     "vue",
     "component",
     "dragabble",
-    "resizable"
+    "resizable",
+    "hot zone",
+    "hot area"
   ],
   "peerDependencies": {
     "vue": "^2.3.0"
