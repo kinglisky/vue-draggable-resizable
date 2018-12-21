@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <div style="height: 500px; width: 500px; margin: 20px; border: 1px solid red; position: relative;">
-      <VueDraggableResizable class="demo" :x="50" :y="50" :w="400" :h="400" :parent="true">
+      <VueDraggableResizable
+        class="demo"
+        v-bind="box"
+        :parent="true"
+        :deselect-exclude="['.deselect-exclude']">
         <p>Custom handles slot</p>
         <template slot="handles" slot-scope="{ handlesConf }">
           <div
@@ -16,6 +20,13 @@
           ></div>
         </template>
       </VueDraggableResizable>
+    </div>
+    <div class="deselect-exclude" style="height: 500px; width: 500px; margin: 20px; border: 1px solid red; position: relative;">
+      <p>deselect exclude btn</p>
+      <div>x <input type="number" v-model.number="box.x"></div>
+      <div>y <input type="number" v-model.number="box.y"></div>
+      <div>w <input type="number" v-model.number="box.w"></div>
+      <div>h <input type="number" v-model.number="box.h"></div>
     </div>
     <div style="height: 500px; width: 500px; margin: 20px; border: 1px solid red; position: relative;">
       <VueDraggableResizable :x="50" :y="50" :w="400" :h="400" :parent="true">
@@ -56,6 +67,16 @@ export default {
   name: 'app',
   components: {
     VueDraggableResizable
+  },
+  data () {
+    return {
+      box: {
+        x: 10,
+        y: 10,
+        w: 100,
+        h: 100
+      }
+    }
   }
 }
 </script>
