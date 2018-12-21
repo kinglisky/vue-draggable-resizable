@@ -13,16 +13,18 @@
     @touchstart="elmDown"
     @dblclick="fillParent"
   >
-    <div
-      v-for="handle in handles"
-      v-if="resizable"
-      class="handle"
-      :key="handle"
-      :class="'handle-' + handle"
-      :style="{ display: enabled ? 'block' : 'none'}"
-      @mousedown="handleDown(handle, $event)"
-      @touchstart="handleDown(handle, $event)"
-    ></div>
+    <slot name="handles" :handles-conf="handlesConf">
+      <div
+        v-for="handle in handles"
+        v-if="resizable"
+        class="handle"
+        :key="handle"
+        :class="'handle-' + handle"
+        :style="{ display: enabled ? 'block' : 'none'}"
+        @mousedown="handleDown(handle, $event)"
+        @touchstart="handleDown(handle, $event)"
+      ></div>
+    </slot>
     <slot></slot>
   </div>
 </template>
@@ -443,6 +445,14 @@ export default {
         width: this.width + 'px',
         height: this.height + 'px',
         zIndex: this.zIndex
+      }
+    },
+    handlesConf: function () {
+      return {
+        handles: this.handles,
+        resizable: this.resizable,
+        enabled: this.enabled,
+        handleDown: this.handleDown
       }
     }
   },
