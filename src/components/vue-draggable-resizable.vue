@@ -13,16 +13,18 @@
     @touchstart="elmDown"
     @dblclick="fillParent"
   >
-    <div
-      v-for="handle in handles"
-      v-if="resizable"
-      class="handle"
-      :key="handle"
-      :class="'handle-' + handle"
-      :style="{ display: enabled ? 'block' : 'none'}"
-      @mousedown="handleDown(handle, $event)"
-      @touchstart="handleDown(handle, $event)"
-    ></div>
+    <slot name="handles" :handles-conf="handlesConf">
+      <div
+        v-for="handle in handles"
+        v-if="resizable"
+        class="handle"
+        :key="handle"
+        :class="'handle-' + handle"
+        :style="{ display: enabled ? 'block' : 'none'}"
+        @mousedown="handleDown(handle, $event)"
+        @touchstart="handleDown(handle, $event)"
+      ></div>
+    </slot>
     <slot></slot>
   </div>
 </template>
@@ -32,7 +34,7 @@ import { matchesSelectorToParentElements } from '../utils/dom'
 
 export default {
   replace: true,
-  name: 'VueDraggableResizable',
+  name: 'VueHotArea',
   props: {
     active: {
       type: Boolean, default: false
@@ -130,6 +132,12 @@ export default {
     },
     maximize: {
       type: Boolean, default: false
+    },
+    deselectExclude: {
+      type: Array,
+      default () {
+        return []
+      }
     }
   },
 
@@ -263,8 +271,17 @@ export default {
 
       const target = e.target || e.srcElement
       const regex = new RegExp('handle-([trmbl]{2})', '')
-
-      if (!this.$el.contains(target) && !regex.test(target.className)) {
+      const elInExclude = (el) => {
+        return this.deselectExclude.some(selector => {
+          const selectorList = [...document.querySelectorAll(selector)]
+          return selectorList.some(node => node.contains(el))
+        })
+      }
+      if (
+        !this.$el.contains(target) &&
+        !regex.test(target.className) &&
+        !elInExclude(target)
+      ) {
         if (this.enabled) {
           this.enabled = false
 
@@ -444,6 +461,18 @@ export default {
         height: this.height + 'px',
         zIndex: this.zIndex
       }
+    },
+    box () {
+      const { x, y, w, h } = this
+      return { x, y, w, h }
+    },
+    handlesConf: function () {
+      return {
+        handles: this.handles,
+        resizable: this.resizable,
+        enabled: this.enabled,
+        handleDown: this.handleDown
+      }
     }
   },
 
@@ -455,6 +484,12 @@ export default {
       if (val >= 0 || val === 'auto') {
         this.zIndex = val
       }
+    },
+    box (v) {
+      this.top = v.y
+      this.left = v.x
+      this.width = v.w
+      this.height = v.h
     }
   }
 }
@@ -465,6 +500,7 @@ export default {
     touch-action: none;
     position: absolute;
     box-sizing: border-box;
+    will-change: width, height, top, left;
   }
   .handle {
     box-sizing: border-box;
