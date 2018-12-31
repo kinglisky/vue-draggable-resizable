@@ -490,6 +490,10 @@ export default {
       this.left = v.x
       this.width = v.w
       this.height = v.h
+      this.elmX = v.x
+      this.elmY = v.y
+      this.elmW = v.w
+      this.elmH = v.h
     }
   }
 }
