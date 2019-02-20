@@ -13,18 +13,16 @@
     @touchstart="elmDown"
     @dblclick="fillParent"
   >
-    <slot name="handles" :handles-conf="handlesConf">
-      <div
-        v-for="handle in handles"
-        v-if="resizable"
+    <div
+        v-for="handle in handlesList"
         class="handle"
         :key="handle"
         :class="'handle-' + handle"
         :style="{ display: enabled ? 'block' : 'none'}"
         @mousedown="handleDown(handle, $event)"
         @touchstart="handleDown(handle, $event)"
-      ></div>
-    </slot>
+      >
+    </div>
     <slot></slot>
   </div>
 </template>
@@ -466,13 +464,9 @@ export default {
       const { x, y, w, h } = this
       return { x, y, w, h }
     },
-    handlesConf: function () {
-      return {
-        handles: this.handles,
-        resizable: this.resizable,
-        enabled: this.enabled,
-        handleDown: this.handleDown
-      }
+
+    handlesList: function () {
+      return this.resizable ? this.handles : []
     }
   },
 
@@ -500,75 +494,79 @@ export default {
 </script>
 
 <style scoped>
-  .vdr {
-    touch-action: none;
+.vdr {
+  position: absolute;
+  box-sizing: border-box;
+  will-change: width, height, top, left;
+
+  touch-action: none;
+}
+
+.handle {
+  position: absolute;
+  display: none;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  font-size: 1px;
+  background: #fff;
+  border: 2px solid #005cf9;
+  border-radius: 50%;
+}
+.handle-tl {
+  top: -7px;
+  left: -7px;
+  cursor: nw-resize;
+}
+.handle-tm {
+  top: -8px;
+  left: 50%;
+  margin-left: -7px;
+  cursor: n-resize;
+}
+.handle-tr {
+  top: -7px;
+  right: -7px;
+  cursor: ne-resize;
+}
+.handle-ml {
+  top: 50%;
+  left: -8px;
+  margin-top: -7px;
+  cursor: w-resize;
+}
+.handle-mr {
+  top: 50%;
+  right: -8px;
+  margin-top: -7px;
+  cursor: e-resize;
+}
+.handle-bl {
+  bottom: -7px;
+  left: -7px;
+  cursor: sw-resize;
+}
+.handle-bm {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -7px;
+  cursor: s-resize;
+}
+.handle-br {
+  right: -7px;
+  bottom: -7px;
+  cursor: se-resize;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="handle-"]:before {
+    content: "";
     position: absolute;
-    box-sizing: border-box;
-    will-change: width, height, top, left;
-  }
-  .handle {
-    box-sizing: border-box;
-    display: none;
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    font-size: 1px;
-    background: #EEE;
-    border: 1px solid #333;
-  }
-  .handle-tl {
-    top: -10px;
-    left: -10px;
-    cursor: nw-resize;
-  }
-  .handle-tm {
-    top: -10px;
-    left: 50%;
-    margin-left: -5px;
-    cursor: n-resize;
-  }
-  .handle-tr {
     top: -10px;
     right: -10px;
-    cursor: ne-resize;
-  }
-  .handle-ml {
-    top: 50%;
-    margin-top: -5px;
-    left: -10px;
-    cursor: w-resize;
-  }
-  .handle-mr {
-    top: 50%;
-    margin-top: -5px;
-    right: -10px;
-    cursor: e-resize;
-  }
-  .handle-bl {
     bottom: -10px;
     left: -10px;
-    cursor: sw-resize;
   }
-  .handle-bm {
-    bottom: -10px;
-    left: 50%;
-    margin-left: -5px;
-    cursor: s-resize;
-  }
-  .handle-br {
-    bottom: -10px;
-    right: -10px;
-    cursor: se-resize;
-  }
-  @media only screen and (max-width: 768px) {
-    /* For mobile phones: */
-    [class*="handle-"]:before {
-      content: '';
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      top: -10px;
-      position: absolute;
-    }
-  }
+}
 </style>

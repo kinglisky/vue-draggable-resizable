@@ -1,6 +1,6 @@
 {
   "name": "vue-hot-area",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Vue2 Component for resizable and draggable elements",
   "author": "kinglisky <kinglisky@icloud.com>",
   "main": "dist/index.js",
